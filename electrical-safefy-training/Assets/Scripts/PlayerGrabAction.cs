@@ -15,6 +15,7 @@ public class PlayerGrabAction : MonoBehaviour
         
     }
 
+    // need to be added to event trigger in InteractiveItems
     public void AquireTarget(GameObject target)
     {
         if (target.tag == "InteractiveItem")
