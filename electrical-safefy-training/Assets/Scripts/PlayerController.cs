@@ -11,36 +11,79 @@ public class PlayerController : MonoBehaviour
     private float gravity = 10f;
     private CharacterController controller;
     private RaycastHit _rayHit;
-    //private GameObject objectInSight = null;
+    private GameObject objectInSight = null;
     private bool objectInHand = false;
+    private DebugPanel debugPanel = null;
+    System.Array keys;
 
     // Start is called before the first frame update
     void Start()
     {
+        keys = System.Enum.GetValues(typeof(KeyCode));
         controller = GetComponent<CharacterController>();
+        var panel = GameObject.FindGameObjectWithTag("DebugPanel");
+        if (panel != null)
+        {
+            debugPanel = panel.GetComponent<DebugPanel>();
+        }
+    }
+
+    public void AquireTarget(GameObject target)
+    {
+        float dist = Vector3.Distance(target.transform.position, playerHand.transform.position);
+        if (target.tag == "InteractiveItem" && dist <= interactRange)
+        {
+            objectInSight = target;
+            objectInSight.GetComponent<InteractiveItem>().HighlightOn();
+        }
+    }
+
+    public void ReleaseTarget()
+    {
+        objectInSight = null;
     }
 
     // Update is called once per frame
     void Update()
     {
-        Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
-        if (Physics.Raycast(ray, out _rayHit, interactRange))
+        // for debugging - todo: change to VR panel for ingame debugging
+        if (debugPanel != null && Input.anyKeyDown)
         {
-            var itemInRange = _rayHit.transform.gameObject;
-            if (itemInRange.CompareTag("InteractiveItem"))
+            foreach (KeyCode code in keys)
             {
-                // Highlight item in range
-                itemInRange.GetComponent<InteractiveItem>().HighlightOn();
-
-                if (Input.GetButtonDown("Fire1")) //TODO: identify correct input code for VrBox controller
-
-                {
-                    GrabAndDropItem(_rayHit.transform.gameObject);
-                }
+                if (Input.GetKeyDown(code)) { debugPanel.print(System.Enum.GetName(typeof(KeyCode), code)); }
             }
         }
 
+        // RAYCAST NOT WORKING IN ANDROID
+        //Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+        //if (Physics.Raycast(ray, out _rayHit, interactRange))
+        //{
+        //    var itemInRange = _rayHit.transform.gameObject;
+        //    if (itemInRange.CompareTag("InteractiveItem"))
+        //    {
+        //        // Highlight item in range
+        //        itemInRange.GetComponent<InteractiveItem>().HighlightOn();
+
+        //        if (ValidGrabKey())
+
+        //        {
+        //            GrabAndDropItem(_rayHit.transform.gameObject);
+        //        }
+        //    }
+        //}
+
+        if (ValidGrabKey() && objectInSight != null)
+        {
+            GrabAndDropItem(objectInSight);
+        }
+
         PlayerMovement();
+    }
+
+    bool ValidGrabKey()
+    {
+        return (Input.GetButtonDown("Fire1") || Input.GetButtonDown("Fire3"));
     }
 
     void PlayerMovement()
@@ -54,6 +97,8 @@ public class PlayerController : MonoBehaviour
         velocity.y -= gravity;
         controller.Move(velocity * Time.deltaTime);
     }
+
+ 
 
     void GrabAndDropItem(GameObject objectInSight)
     {
