@@ -12,6 +12,8 @@ public class PlayerController : MonoBehaviour
     private CharacterController controller;
     private RaycastHit _rayHit;
     private GameObject objectInSight = null;
+    private Collider[] objectInSightColliders;
+    private Rigidbody objectInSightBody;
     private bool objectInHand = false;
     private DebugPanel debugPanel = null;
     System.Array keys;
@@ -35,6 +37,8 @@ public class PlayerController : MonoBehaviour
         if (target.tag == "InteractiveItem" && dist <= interactRange)
         {
             objectInSight = target;
+            objectInSightColliders = target.GetComponents<Collider>();
+            objectInSightBody = target.GetComponent<Rigidbody>();
             objectInSight.GetComponent<InteractiveItem>().HighlightOn();
         }
     }
@@ -105,16 +109,26 @@ public class PlayerController : MonoBehaviour
     {
         if (!objectInHand)
         {
+            foreach(var collider in objectInSightColliders)
+            {
+                collider.isTrigger = true;
+            }
             objectInSight.transform.SetParent(playerHand.transform);
             //targetObject.transform.localPosition = playerHand.transform.localPosition;
             objectInSight.transform.localPosition = new Vector3(0f, 0f, 0f);
+            objectInSightBody.velocity = Vector3.zero;
+            objectInSightBody.useGravity = false;
             objectInHand = true;
         }
         else
         {
             objectInSight.transform.SetParent(GameObject.FindGameObjectWithTag("ItemContainer").transform);
+            foreach (var collider in objectInSightColliders)
+            {
+                collider.isTrigger = false ;
+            }
             objectInHand = false;
-            objectInSight = null;
+            objectInSightBody.useGravity = true;
         }
     } 
 }
