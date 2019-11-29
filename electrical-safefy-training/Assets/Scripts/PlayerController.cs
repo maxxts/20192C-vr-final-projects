@@ -19,6 +19,7 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        // key mapping for vrbox controller debugging
         keys = System.Enum.GetValues(typeof(KeyCode));
         controller = GetComponent<CharacterController>();
         var panel = GameObject.FindGameObjectWithTag("DebugPanel");
