@@ -39,7 +39,10 @@ public class PlayerController : MonoBehaviour
             objectInSight = target;
             objectInSightColliders = target.GetComponents<Collider>();
             objectInSightBody = target.GetComponent<Rigidbody>();
-            objectInSight.GetComponent<InteractiveItem>().HighlightOn();
+            if (objectInSight.GetComponent<InteractiveItem>())
+            {
+                objectInSight.GetComponent<InteractiveItem>().HighlightOn();
+            }
         }
     }
 
