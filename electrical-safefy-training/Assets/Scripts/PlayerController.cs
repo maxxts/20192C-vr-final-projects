@@ -34,14 +34,18 @@ public class PlayerController : MonoBehaviour
     public void AquireTarget(GameObject target)
     {
         float dist = Vector3.Distance(target.transform.position, playerHand.transform.position);
-        if (target.tag == "InteractiveItem" && dist <= interactRange)
+        if (dist <= interactRange)
         {
             objectInSight = target;
             objectInSightColliders = target.GetComponents<Collider>();
             objectInSightBody = target.GetComponent<Rigidbody>();
-            if (objectInSight.GetComponent<InteractiveItem>())
+
+            if (target.CompareTag("InteractiveItem"))
             {
-                objectInSight.GetComponent<InteractiveItem>().HighlightOn();
+                if (objectInSight.GetComponent<InteractiveItem>())
+                {
+                    objectInSight.GetComponent<InteractiveItem>().HighlightOn();
+                }
             }
         }
     }
@@ -112,7 +116,12 @@ public class PlayerController : MonoBehaviour
     {
         if (!objectInHand)
         {
-            foreach(var collider in objectInSightColliders)
+            if (objectInSight.CompareTag("EquippableItem"))
+            {
+                objectInSight.GetComponent<EquipabbleItem>().PlaySound();
+            }
+
+            foreach (var collider in objectInSightColliders)
             {
                 collider.isTrigger = true;
             }
