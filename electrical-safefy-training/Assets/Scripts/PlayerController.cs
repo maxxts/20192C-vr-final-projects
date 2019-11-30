@@ -67,7 +67,8 @@ public class PlayerController : MonoBehaviour
             }
         }
 
-        // RAYCAST NOT WORKING IN ANDROID
+        // RAYCAST NOT WORKING IN GoogleVR -- should I have used GvrPointerPhysicsRaycaster?
+
         //Ray ray = Camera.main.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
         //if (Physics.Raycast(ray, out _rayHit, interactRange))
         //{
