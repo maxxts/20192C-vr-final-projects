@@ -2735,7 +2735,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 1
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
 --- !u!1001 &735503578
 PrefabInstance:
@@ -7554,7 +7554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 766346198, guid: 463285ecd6702471a909ba810832bf0e, type: 3}
       propertyPath: m_RootOrder
-      value: 2
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 766346198, guid: 463285ecd6702471a909ba810832bf0e, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -7625,9 +7625,9 @@ Terrain:
   m_TerrainData: {fileID: 15600000, guid: 86baf4011e8a9a24ab3b42fd8035a074, type: 2}
   m_TreeDistance: 5000
   m_TreeBillboardDistance: 50
-  m_TreeCrossFadeLength: 5
-  m_TreeMaximumFullLODCount: 50
-  m_DetailObjectDistance: 250
+  m_TreeCrossFadeLength: 74.7
+  m_TreeMaximumFullLODCount: 413
+  m_DetailObjectDistance: 52
   m_DetailObjectDensity: 1
   m_HeightmapPixelError: 69
   m_SplatMapDistance: 1024
